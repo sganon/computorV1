@@ -54,14 +54,15 @@ func parseMember(str string, memberPos int) (Member, error) {
 }
 
 func getOperandPos(side string) []int {
-	var positons []int
-
+	var positions []int
+	positions = append(positions, 0)
 	for i, c := range side {
 		if string(c) == "+" || string(c) == "-" {
-			positons = append(positons, i)
+			positions = append(positions, i)
 		}
 	}
-	return positons
+	positions = append(positions, len(side)-1)
+	return positions
 }
 
 func ParseEquation(equation string) (Equation, error) {
@@ -73,17 +74,10 @@ func ParseEquation(equation string) (Equation, error) {
 	}
 	positions := getOperandPos(sides[0])
 	i := 0
-	for i < 3 {
+	for i < len(positions)-1 {
 		var err error
 		var member Member
-		switch i {
-		case 0:
-			member, err = parseMember(string(sides[0][:positions[i]]), i+1)
-		case 1:
-			member, err = parseMember(string(sides[0][positions[i-1]:positions[i]]), i+1)
-		case 2:
-			member, err = parseMember(string(sides[0][positions[i-1]:]), i+1)
-		}
+		member, err = parseMember(string(sides[0][positions[i]:positions[i+1]]), i+1)
 		if err != nil {
 			return Equation{}, err
 		}

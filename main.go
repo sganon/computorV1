@@ -7,6 +7,7 @@ import (
 
 	"github.com/sganon/computorV1/parser"
 	"github.com/sganon/computorV1/reducer"
+	"github.com/sganon/computorV1/resolver"
 )
 
 func main() {
@@ -14,11 +15,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(equation)
 	reducer.ReduceEquation(&equation)
-	fmt.Println(equation)
-	err = reducer.ValidateEquation(equation)
+	fmt.Printf("Reduced :")
+	reducer.PrintEquation(equation)
+	err = reducer.ValidateEquation(&equation)
 	if err != nil {
 		log.Fatal(err)
 	}
+	resolver.ResolveEquation(equation)
 }
